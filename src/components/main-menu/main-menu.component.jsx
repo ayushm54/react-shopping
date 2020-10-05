@@ -48,14 +48,20 @@ class MainMenu extends React.Component {
   render() {
     return (
       <div className="main-menu">
-        {this.state.sections.map((section) => (
-          <MenuItem
-            key={section.id}
-            title={section.title}
-            imageUrl={section.imageUrl}
-            size={section.size}
-          />
-        ))}
+        {
+          //   this.state.sections.map((section) => (
+          //   <MenuItem
+          //     key={section.id}
+          //     title={section.title}
+          //     imageUrl={section.imageUrl}
+          //     size={section.size}
+          //   />
+          // ))
+          // above code could be also rewritten as below using destructuring
+          this.state.sections.map(({ id, ...otherSectionProps }) => (
+            <MenuItem key={id} {...otherSectionProps} />
+          ))
+        }
       </div>
     );
   }

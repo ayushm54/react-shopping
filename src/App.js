@@ -1,20 +1,23 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
 import "./App.css";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignOut from "./pages/sign-in-sign-out/sign-in-sign-out.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { setCurrentUser } from "./redux/user/user.actions";
 
 // exact attribute on Route component matches the exact path
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentUser: null,
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     currentUser: null,
+  //   };
+  // }
 
   unsubscribeFromAuth = null;
 
@@ -31,17 +34,24 @@ class App extends React.Component {
           // snapshot.data() would only return the actual data that we stored
           // but not the uid with whch it is stored, so we have to get it directly from snapshot
           // console.log(snapshot.data());
-          this.setState({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data(),
-            },
+          // this.setState({
+          //   currentUser: {
+          //     id: snapshot.id,
+          //     ...snapshot.data(),
+          //   },
+          // });
+          // instead setting the value to state, we would now dispatch th action to update the store
+          this.props.setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data(),
           });
         });
       }
       // if auth fails userAuth would be null so we directly set it to reflect that no user has logged in
       // this would be the case when user signout and the auth subscription returns null
-      this.setState({ currentUser: userAuth });
+      // this.setState({ currentUser: userAuth });
+
+      this.props.setCurrentUser(userAuth);
     });
   }
 
@@ -55,15 +65,34 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/signin" component={SignInSignOut} />
+          <Route
+            exact
+            path="/signin"
+            render={() =>
+              this.props.currentUser ? <Redirect to="/" /> : <SignInSignOut />
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+// this function enables us to send actions to update the state
+// this would enable us to access the setCurrentUser as a prop to dispatch action
+const mapDispatchToProps = (dispatch) => ({
+  // dispatch() is actually dispatching the actions
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+// if we do not need to read fron state in this component
+// we can passing the 1st arg to connect as null (i.e; mapStateToProps)
+export default connect(mapStateToProps, mapDispatchToProps)(App);

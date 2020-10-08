@@ -21,6 +21,11 @@
         scrollbar-width: none;
         /* Internet Explorer 10+ */
         -ms-overflow-style: none;
+
+        .empty-message {
+            font-size: 18px;
+            margin: 50px auto;
+        }
     }
 
     // to hide the scrollbar visibility

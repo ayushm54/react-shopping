@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
 import "./header.styles.scss";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { auth } from "../../firebase/firebase.utils";
@@ -39,9 +41,21 @@ const Header = ({ currentUser, hidden }) => (
 // in mapStateToProps we receive the rootreducer state
 // and read and map the required fields from this state
 // so now this current user from the state would act as a prop for this component
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
-  hidden: state.cart.hidden,
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+//   hidden: state.cart.hidden,
+// });
+
+// const mapStateToProps = (state) => ({
+//   currentUser: selectCurrentUser(state),
+//   hidden: selectCartHidden(state),
+// });
+
+// the above mapStateToProps could be rewritten using createStructuredSelector as below
+// createStructuredSelector woud automatically pass the state to individual selectors
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
 });
 
 // connect is a higher order function which would modify the header component to access redux store

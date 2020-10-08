@@ -24,14 +24,15 @@
     }
 
     .quantity {
-        padding-left: 20px;
+        display: flex;
 
-        i {
-            padding: 5px;
+        .operator {
+            cursor: pointer;
+            padding-top: 4px;
         }
 
-        i:hover {
-            cursor: pointer;
+        .value {
+            margin: 0 10px;
         }
     }
 

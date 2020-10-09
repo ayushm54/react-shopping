@@ -12,7 +12,7 @@ const CollectionPreview = ({ title, items, history, match }) => (
     >
       {title.toUpperCase()}
     </h1>
-    <div cl assName="preview">
+    <div className="preview">
       {
         // we just want to display 4 items from each collection in the preview section
         // so we need to add the filter to pick only 4 items

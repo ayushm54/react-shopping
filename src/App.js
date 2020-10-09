@@ -66,6 +66,8 @@ class App extends React.Component {
     this.unsubscribeFromAuth();
   }
 
+  // ROute automatically passes the props like history, match ,etc.
+  // to the component it is is routing to, so we can access those in outr component
   render() {
     return (
       <div>

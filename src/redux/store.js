@@ -9,8 +9,11 @@ import rootReducer from "./root-reducer";
 // for e.g; here we are using redux logger to log out actions before they are handled by the root reducer
 
 // creating an array of middlewares to be used
-const middlewares = [logger];
-
+const middlewares = [];
+// just use logger only in development mode
+if (process.env.NODE_ENV === "development") {
+  middlewares.push(logger);
+}
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 // here we created a persited store

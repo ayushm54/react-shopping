@@ -4,10 +4,15 @@ import { withRouter } from "react-router-dom";
 import CollectionItem from "../collection-item/collection-item.component";
 import "./collection-preview.styles.scss";
 
-const CollectionPreview = ({ title, items }) => (
+const CollectionPreview = ({ title, items, history, match }) => (
   <div className="collection-preview">
-    <h1 className="title">{title.toUpperCase()}</h1>
-    <div className="preview">
+    <h1
+      className="title"
+      onClick={() => history.push(`${match.path}/${title.toLowerCase()}`)}
+    >
+      {title.toUpperCase()}
+    </h1>
+    <div cl assName="preview">
       {
         // we just want to display 4 items from each collection in the preview section
         // so we need to add the filter to pick only 4 items
@@ -21,4 +26,4 @@ const CollectionPreview = ({ title, items }) => (
   </div>
 );
 
-export default CollectionPreview;
+export default withRouter(CollectionPreview);

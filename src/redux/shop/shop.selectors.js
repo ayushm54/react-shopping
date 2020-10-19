@@ -11,13 +11,19 @@ export const selectCollections = createSelector(
 // Object.keys would make an array of all the keys in collections map
 // and then we run the array.map function on this keys array and
 // pull out the valus of those keys and return a new array
+// since we have removed the initial state (Static) from reducer, so the
+// selectCollections would now return null and hence we need to handle it
+// and here we handled it by returning a empty array
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
-  (collections) => Object.keys(collections).map((key) => collections[key])
+  (collections) =>
+    collections ? Object.keys(collections).map((key) => collections[key]) : []
 );
 
+// since we have removed the initial state (Static) from reducer, so the
+// selectCollections would now return null and hence we need to handle it
+// and here we handled it by returning a null
 export const selectCollection = (collectionUrlParam) =>
-  createSelector(
-    [selectCollections],
-    (collections) => collections[collectionUrlParam]
+  createSelector([selectCollections], (collections) =>
+    collections ? collections[collectionUrlParam] : null
   );

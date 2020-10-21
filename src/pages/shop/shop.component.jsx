@@ -26,7 +26,14 @@ class ShopPage extends React.Component {
   // fetching the shop collections from firestore
   componentDidMount() {
     const collectionRef = firestore.collection("collections");
-    collectionRef.onSnapshot(async (snapshot) => {
+    // collectionRef.onSnapshot(async (snapshot) => {
+    //   const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+    //   this.props.updateCollectionsInRedux(collectionsMap);
+    //   this.setState({ loading: false });
+    // });
+
+    // Above code can be also written with promise as below
+    collectionRef.get().then((snapshot) => {
       const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
       this.props.updateCollectionsInRedux(collectionsMap);
       this.setState({ loading: false });
